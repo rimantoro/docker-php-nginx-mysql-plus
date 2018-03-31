@@ -10,15 +10,6 @@ web:
       - ./logs:/logs
     links:
       - php
-php:
-    build: ./php
-    volumes:
-      - ./app:/myapp
-    links: 
-      - mysql
-      - redis
-      - mongodb
-      - rabbitmq
 mysql:
   image: mariadb:10.1
   environment:
@@ -55,3 +46,12 @@ rabbitmq:
   ports:
     - 15672:15672
     - 5672:5672
+php:
+    build: ./php
+    volumes:
+      - ./app:/myapp
+    links: 
+      - mysql
+      - redis
+      - mongodb
+      - rabbitmq
