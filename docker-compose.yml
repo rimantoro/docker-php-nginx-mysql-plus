@@ -1,0 +1,54 @@
+web:
+    image: nginx:latest
+    ports:
+      - 8080:80
+    volumes:
+      - ./app:/web
+      - ./site.conf:/etc/nginx/conf.d/000_site.conf
+    links:
+      - php
+php:
+    build: ./php
+    volumes:
+      - ./app:/web
+    links: 
+      - mysql
+      - redis
+      - mongodb
+      - rabbitmq
+mysql:
+  image: mariadb:10.1
+  environment:
+    MYSQL_ROOT_PASSWORD: masukaja
+  ports:
+    - 3306:3306
+  restart: always
+  volumes:
+      - ./data/mysql:/var/lib/mysql
+redis:
+  image: redis:3.2.11
+  command: ["redis-server"]
+  restart: always
+  ports:
+    - 6379:6379
+mongodb:
+  image: mongo:3.6
+  environment:
+    - MONGO_DATA_DIR=/data/db
+    - MONGO_LOG_DIR=/dev/null
+  volumes:
+    - ./data/mongodb:/data/db
+  ports:
+    - 27017:27017
+  command: mongod --smallfiles --logpath=/dev/null
+rabbitmq:
+  image: rabbitmq:3.7.4-management
+  hostname: "rabbitmq.local"
+  environment:
+    RABBITMQ_ERLANG_COOKIE: "X0DYOLVQWLISXX9G"
+    RABBITMQ_DEFAULT_USER: "rabbitmq"
+    RABBITMQ_DEFAULT_PASS: "rabbitmq"
+    RABBITMQ_DEFAULT_VHOST: "/"
+  ports:
+    - 15672:15672
+    - 5672:5672
