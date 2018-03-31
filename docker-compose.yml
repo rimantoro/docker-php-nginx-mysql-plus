@@ -1,16 +1,19 @@
 web:
-    image: nginx:latest
+    build: ./nginx
     ports:
-      - 8080:80
+      - 80:80
     volumes:
-      - ./app:/web
-      - ./site.conf:/etc/nginx/conf.d/000_site.conf
+      - ./app:/myapp
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+      - ./logs:/logs
     links:
       - php
 php:
     build: ./php
     volumes:
-      - ./app:/web
+      - ./app:/myapp
     links: 
       - mysql
       - redis
