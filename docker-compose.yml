@@ -10,7 +10,7 @@ web:
       - ./logs:/logs
     links:
       - php
-mysql:
+mysql_server:
   image: mariadb:10.1
   environment:
     MYSQL_ROOT_PASSWORD: masukaja
@@ -19,13 +19,14 @@ mysql:
   restart: always
   volumes:
       - ./data/mysql:/var/lib/mysql
-redis:
+      - ./mysql-custom.cnf:/etc/mysql/conf.d/mysql-custom.cnf
+redis_server:
   image: redis:3.2.11
   command: ["redis-server"]
   restart: always
   ports:
     - 6379:6379
-mongodb:
+mongodb_server:
   image: mongo:3.6
   environment:
     - MONGO_DATA_DIR=/data/db
@@ -34,8 +35,8 @@ mongodb:
     - ./data/mongodb:/data/db
   ports:
     - 27017:27017
-  command: mongod --smallfiles --logpath=/dev/null
-rabbitmq:
+  command: ["mongod", "--master", "--smallfiles", "--logpath=/dev/null"]
+rabbitmq_server:
   image: rabbitmq:3.7.4-management
   hostname: "rabbitmq.local"
   environment:
@@ -51,7 +52,7 @@ php:
     volumes:
       - ./app:/myapp
     links: 
-      - mysql
-      - redis
-      - mongodb
-      - rabbitmq
+      - mysql_server
+      - redis_server
+      - mongodb_server
+      - rabbitmq_server
