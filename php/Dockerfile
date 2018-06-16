@@ -38,3 +38,10 @@ RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$P
     && docker-php-ext-install redis
 
 RUN apt-get autoremove && apt-get autoclean
+
+
+#### NodeJS & JS stuffs
+
+RUN curl -sL https://deb.nodesource.com/setup_8.x | /bin/bash - \
+    && apt-get install -y nodejs \
+    && npm install apidoc -g

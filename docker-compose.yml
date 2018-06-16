@@ -48,11 +48,14 @@ rabbitmq_server:
     - 15672:15672
     - 5672:5672
 php:
-    build: ./php
-    volumes:
-      - ./app:/myapp
-    links: 
-      - mysql_server
-      - redis_server
-      - mongodb_server
-      - rabbitmq_server
+  build: ./php
+  volumes:
+    - ./app:/myapp
+  links: 
+    - mysql_server
+    - redis_server
+    - mongodb_server
+    - rabbitmq_server
+  net: "bridge"
+  extra_hosts:
+    - "meowth.sepulsa.local:127.0.0.1"
