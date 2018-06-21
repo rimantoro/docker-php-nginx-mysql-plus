@@ -32,47 +32,14 @@ Add entries in your `/etc/hosts` file on your host OS (I'm in OSX).
 
 Run docker-compose up and access those site within your browser ( i.e: http://web_1.local )
 
-## MySQL
+## Create Network and Support Stack
 
-MySQL persistence data will be saved into ```./data/mysql``` within this root project, so it will still available if you're running ```docker-compose down```.
-```
-Host : 0.0.0.0:3306
-User : root
-Pass : masukaja
-```
+You can use my other container for supporting stack (i.e: MySQL, Redis, MongoDB, etc) at here : [https://github.com/rimantoro/docker_support_stack](https://github.com/rimantoro/docker_support_stack) . Before this container can be accessible from your container, you need to create a network ```my-shared-network``` or with other you name which you must define it on ```docker-compose.yml```
 
-## MongoDB
-
-Same with MySQL, data are persistence and will be saved in ```./data/mongodb```.
-```
-Host : 0.0.0.0:27017
-User : None
-Pass : None
-```
-
-## Redis
+Create docker network with this command :
 
 ```
-Host : 0.0.0.0:6379
-User : None
-Pass : None
-```
-
-## RabbitMQ
-
-Installed with management plugin.
-
-```
-Service Host : 0.0.0.0:5672
-Web Management : 0.0.0.0:15672
-User : rabbitmq
-Pass : rabbitmq
-```
-
-You can access it with its domain `http://rabbitmq.local:15672/` after you add an entries into your host OS`/etc/hosts`.
-
-```
-0.0.0.0	rabbitmq.local
+docker network create my-shared-network
 ```
 
 ## How To Add More Web App Project
@@ -84,4 +51,5 @@ I'm using vhost domain to separate webaap. You can add more webapp based on PHP 
 * Addtionally : Add your vhost subdomain in ```docker-compose.yml``` in ```extra_hosts``` under ```php``` section, i.e ```"my_webapp.local:127.0.0.1"```.
 * Rebuild docker with ```docker-compose build```. Makesure this step is success, otherwise you need to figure out your self.
 * Set your ```hosts file``` and add my_webapp.local domain into it, so your host OS can access it. i.e ```0.0.0.0	my_webapp.local```
+
 
