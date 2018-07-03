@@ -1,25 +1,36 @@
 version : '2'
 
 services:
-  web:
-      build: ./nginx
-      ports:
-        - 80:80
-      volumes:
-        - ./app:/myapp
-        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-        - ./nginx/conf.d:/etc/nginx/conf.d
-        - ./nginx/sites-enabled:/etc/nginx/sites-enabled
-        - ./logs:/logs
-      links:
-        - php
+  terra:
+    build: ./nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./app/terra:/myapp/terra
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/sites-enabled/terra.sepulsa.local.conf:/etc/nginx/sites-enabled/terra.sepulsa.local.conf
+      - ./logs:/logs
+    links:
+      - php
+    hostname: "terra.sepulsa.local"
+  meowth:
+    build: ./nginx
+    ports:
+      - 8081:80
+    volumes:
+      - ./app/meowth:/myapp/meowth
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/sites-enabled/meowth.sepulsa.local.conf:/etc/nginx/sites-enabled/meowth.sepulsa.local.conf
+      - ./logs:/logs
+    links:
+      - php
+    hostname: "meowth.sepulsa.local"
   php:
     build: ./php
     volumes:
       - ./app:/myapp
-    extra_hosts:
-      - "meowth.sepulsa.local:127.0.0.1"
-      - "elissian.sepulsa.local:127.0.0.2"
 
 networks: 
   default:
